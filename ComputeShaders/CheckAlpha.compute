@@ -1,0 +1,21 @@
+﻿#pragma kernel CSMain
+
+RWTexture2D<float4> InputTexture;
+float MinAlphaValue;
+
+RWStructuredBuffer<int> CountBuffer;
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	if (InputTexture[id.xy].a < MinAlphaValue / 100.0)
+	{
+		if (InputTexture[id.xy].a != 0.0)
+		{
+			float4 c = float4(InputTexture[id.xy].r, InputTexture[id.xy].g, InputTexture[id.xy].b, 0.0);
+			InputTexture[id.xy] = c;
+		}
+
+		InterlockedAdd(CountBuffer[0], 1);
+	}
+}

@@ -1,0 +1,34 @@
+﻿#pragma kernel CSMain
+#pragma kernel Rescale
+
+RWTexture2D<float4> Result;
+
+Texture2D<float4> TextureInput;
+RWTexture2D<float4> TextureOutput;
+int Ratio;
+
+Texture2D<float4> RTextureOutput;
+Texture2D<float4> GTextureOutput;
+Texture2D<float4> BTextureOutput;
+Texture2D<float4> ATextureOutput;
+
+[numthreads(8, 8, 1)]
+void Join(uint3 id : SV_DispatchThreadID)
+{
+	float4 col1 = RTextureOutput[id.xy];
+	float4 col2 = GTextureOutput[id.xy];
+	float4 col3 = BTextureOutput[id.xy];
+	float4 col4 = ATextureOutput[id.xy];
+
+	Result[id.xy] = float4(
+		max(max(col1.r, col1.g), col1.b),
+		max(max(col2.r, col2.g), col2.b),
+		max(max(col3.r, col3.g), col3.b),
+		max(max(col4.r, col4.g), col4.b));
+}
+
+[numthreads(8, 8, 1)]
+void Rescale(uint3 id : SV_DispatchThreadID)
+{
+	TextureOutput[id.xy] = TextureInput[id.xy / Ratio];
+}
