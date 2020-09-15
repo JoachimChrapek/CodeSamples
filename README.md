@@ -9,7 +9,7 @@
  Unity Window Tool for modifying language files used in games for translation.
  
 # Octree
- Fast data structure to fit my needs in my own voxel game. Used for storing block data by ID.
+ Fast data structure to fit my needs in my own voxel game (https://youtu.be/JHOxhLYaEAc). Used for storing block data by ID.
  
 # UiController
  Class used in many of my prototypes. Turns on and off UI pieces (for example panels) based on Context.
